@@ -1,0 +1,41 @@
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { PatientAuthService } from "./patient/patient.auth.service";
+import { PatientsModule } from "../patients/patients.module";
+import { DoctorsModule } from "../doctors/doctors.module";
+import { AdminsModule } from "../admins/admins.module";
+import { DoctorsController } from "../doctors/doctors.controller";
+import { AdminAuthService } from "./admin/admin.auth.service";
+import { DoctorAuthService } from "./doctor/doctor.auth.service";
+import { AdminsController } from "../admins/admins.controller";
+import { StaffAuthService } from "./staff/staff.auth.service";
+import { StaffsController } from "../staffs/staffs.controller";
+import { StaffsModule } from "../staffs/staffs.module";
+import { PatientAuthController } from "./patient/patient.auth.controller";
+import { StaffAuthController } from "./staff/staff.auth.controller";
+import { AdminAuthController } from "./admin/admin.auth.controller";
+import { DoctorAuthController } from "./doctor/doctor.auth.controller";
+
+@Module({
+  imports: [
+    JwtModule.register({}),
+    PatientsModule,
+    AdminsModule,
+    DoctorsModule,
+    StaffsModule,
+  ],
+  controllers: [
+    PatientAuthController,
+    DoctorAuthController,
+    AdminAuthController,
+    StaffAuthController, // ____________________ !
+  ],
+  providers: [
+    PatientAuthService,
+    DoctorAuthService,
+    AdminAuthService,
+    StaffAuthService,
+  ],
+  exports: [],
+})
+export class AuthModule {}
