@@ -14,7 +14,6 @@ import { UpdateAppointmentDto } from "./dto/update-appointment.dto";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
 import { PatientGuard } from "../common/guards/patientGuard/patient.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 import { AuthGuard } from "../common/guards/auth.guard";
 import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
 
@@ -61,7 +60,7 @@ export class AppointmentsController {
     return this.appointmentsService.update(+id, updateAppointmentDto);
   }
 
-  @UseGuards(AuthGuard, StaffGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, StaffGuard, PatientGuard)
   @ApiOperation({ summary: "Appointmentni o'chirish" })
   @ApiResponse({ status: 200, description: "Appointment o'chirildi" })
   @Delete(":id")

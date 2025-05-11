@@ -14,10 +14,7 @@ import { CreatePaymentDto } from "./dto/create-payment.dto";
 import { UpdatePaymentDto } from "./dto/update-payment.dto";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CashierGuard } from "../common/guards/staffGuard/staff.guard";
-import { CashierOwnershipGuard } from "../common/guards/staffGuard/staffOwnership.guard";
-import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
-import { PatientGuard } from "../common/guards/patientGuard/patient.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
+import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
 
 @ApiTags("To'lovlar")
 @Controller("payments")
@@ -41,7 +38,7 @@ export class PaymentsController {
     return this.paymentsService.findAll();
   }
 
-  @UseGuards(AuthGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, PatientGuard)
   @Get(":id")
   @ApiOperation({ summary: "To'lovni ID bo'yicha ko'rish" })
   @ApiResponse({ status: 200, description: "To'lov ma'lumotlari" })
@@ -50,7 +47,7 @@ export class PaymentsController {
     return this.paymentsService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard, CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @Patch(":id")
   @ApiOperation({ summary: "To'lov ma'lumotlarini yangilash" })
   @ApiResponse({
@@ -63,7 +60,7 @@ export class PaymentsController {
     return this.paymentsService.update(+id, updatePaymentDto);
   }
 
-  @UseGuards(AuthGuard, CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @Delete(":id")
   @ApiOperation({ summary: "To'lovni o'chirish" })
   @ApiResponse({

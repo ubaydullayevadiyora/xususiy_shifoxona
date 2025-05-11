@@ -15,8 +15,6 @@ import { UpdatePaymentDetailDto } from "./dto/update-payment-detail.dto";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger"; 
 import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
 import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
-import { PatientOwnershipGuard } from '../common/guards/patientGuard/patientOwnership.guard';
-import { CashierOwnershipGuard } from '../common/guards/staffGuard/staffOwnership.guard';
 import { AuthGuard } from '../common/guards/auth.guard';
 
 @ApiTags("Payment Details")
@@ -53,7 +51,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard, CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @ApiOperation({ summary: "Update a payment detail by ID" })
   @ApiResponse({
     status: 200,
@@ -68,7 +66,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.update(+id, updatePaymentDetailDto);
   }
 
-  @UseGuards(AuthGuard, CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @ApiOperation({ summary: "Delete a payment detail by ID" })
   @ApiResponse({
     status: 200,

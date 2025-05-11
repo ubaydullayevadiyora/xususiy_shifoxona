@@ -9,7 +9,7 @@ import { DiagnosesModule } from "../diagnoses/diagnoses.module";
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Payment]), AppointmentsModule, JwtModule, DiagnosesModule
+    SequelizeModule.forFeature([Payment]), JwtModule
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService],

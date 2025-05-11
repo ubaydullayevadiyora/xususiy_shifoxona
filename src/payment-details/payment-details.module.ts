@@ -6,13 +6,11 @@ import { PaymentDetail } from "./models/payment-detail.model";
 import { AppointmentsModule } from "../appointments/appointments.module";
 import { PaymentsModule } from "../payments/payments.module";
 import { DiagnosesModule } from "../diagnoses/diagnoses.module";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([PaymentDetail]),
-    PaymentsModule,
-    AppointmentsModule,
-    DiagnosesModule
+    SequelizeModule.forFeature([PaymentDetail]),JwtModule
   ],
   controllers: [PaymentDetailsController],
   providers: [PaymentDetailsService],

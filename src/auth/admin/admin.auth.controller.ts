@@ -28,9 +28,6 @@ export class AdminAuthController {
   @ApiResponse({ status: 401, description: "Login yoki parol noto'g'ri" })
   // @Post("sign-in")
   async signIn(@Body() signInAdminDto: SignInAdminDto, @Res() res: Response) {
-    if (!signInAdminDto?.email) {
-      throw new BadRequestException("Email kiritilmagan");
-    }
     return this.adminAuthService.signIn(signInAdminDto, res);
   }
 

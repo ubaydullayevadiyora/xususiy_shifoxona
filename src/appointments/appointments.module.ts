@@ -4,12 +4,11 @@ import { AppointmentsController } from "./appointments.controller";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Appointment } from "./models/appointment.model";
 import { JwtModule } from "@nestjs/jwt";
-import { PatientsModule } from "../patients/patients.module";
-import { DoctorsModule } from "../doctors/doctors.module";
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Appointment]),JwtModule, PatientsModule, DoctorsModule 
+    SequelizeModule.forFeature([Appointment]),
+    JwtModule
   ],
   controllers: [AppointmentsController],
   providers: [AppointmentsService],

@@ -20,7 +20,7 @@ import { AuthGuard } from "../common/guards/auth.guard";
 export class StaffsController {
   constructor(private readonly staffsService: StaffsService) {}
 
-  @UseGuards(AuthGuard, AdminGuard)
+  // @UseGuards(AuthGuard, AdminGuard)
   @ApiOperation({ summary: "Xodim yaratish" })
   @ApiResponse({ status: 201, description: "Xodim muvaffaqiyatli yaratildi." })
   @Post()

@@ -15,7 +15,7 @@ import { ApiTags, ApiOperation, ApiParam } from "@nestjs/swagger";
 import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
 import { StaffGuard } from '../common/guards/staffGuard/staff.guard';
 import { AuthGuard } from '../common/guards/auth.guard';
-import { DoctorOwnershipGuard } from '../common/guards/doctorGuard/doctorOwnership.guard';
+import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
 
 @ApiTags("Patients")
 @Controller("patients")
@@ -29,14 +29,14 @@ export class PatientsController {
     return this.patientsService.create(createPatientDto);
   }
 
-  @UseGuards(AuthGuard, StaffGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, StaffGuard, DoctorGuard)
   @ApiOperation({ summary: "Barcha bemorlarni olish" })
   @Get()
   findAll() {
     return this.patientsService.findAll();
   }
 
-  @UseGuards(AuthGuard, StaffGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, StaffGuard, DoctorGuard)
   @ApiOperation({ summary: "ID orqali bitta bemorni olish" })
   @ApiParam({ name: "id", type: Number })
   @Get(":id")

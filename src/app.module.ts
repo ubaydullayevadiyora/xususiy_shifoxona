@@ -26,6 +26,7 @@ import { LabTest } from "./lab-tests/models/lab-test.model";
 import { Diagnosis } from "./diagnoses/models/diagnosis.model";
 import { Appointment } from "./appointments/models/appointment.model";
 import { AuthModule } from "./auth/auth.module";
+import { ClinicModule } from "./clinic/clinic.module";
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { AuthModule } from "./auth/auth.module";
     RoomAssignmentsModule,
 
     AuthModule,
+    ClinicModule,
   ],
   controllers: [],
   providers: [],

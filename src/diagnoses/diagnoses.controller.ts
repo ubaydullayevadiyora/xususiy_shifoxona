@@ -14,7 +14,7 @@ import { CreateDiagnosisDto } from "./dto/create-diagnosis.dto";
 import { UpdateDiagnosisDto } from "./dto/update-diagnosis.dto";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
+import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
 
 @ApiTags("Diagnoses")
 @Controller("diagnoses")
@@ -38,7 +38,7 @@ export class DiagnosesController {
     return this.diagnosesService.findAll();
   }
 
-  @UseGuards(AuthGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, PatientGuard)
   @ApiOperation({ summary: "Ma'lum bir diagnozni ko'rish" })
   @ApiResponse({ status: 200, description: "Diagnoz topildi" })
   @ApiResponse({ status: 404, description: "Diagnoz topilmadi" })

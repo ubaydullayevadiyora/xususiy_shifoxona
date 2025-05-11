@@ -20,8 +20,6 @@ import { RoomAssignmentsService } from "./room-assignments.service";
 import { CreateRoomAssignmentDto } from "./dto/create-room-assignment.dto";
 import { UpdateRoomAssignmentDto } from "./dto/update-room-assignment.dto";
 import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
-import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 
 @ApiTags("Xona tayinlashlar")
 @Controller("room-assignments")

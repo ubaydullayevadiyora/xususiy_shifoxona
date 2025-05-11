@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException("Token yaroqsiz yoki faol emas");
       }
 
-      req.user = payload; // Guarddan keyin controllerda req.user mavjud bo'ladi
+      req.user = payload; 
       return true;
     } catch (err) {
       console.error(err);

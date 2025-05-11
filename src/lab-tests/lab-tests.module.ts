@@ -12,10 +12,6 @@ import { JwtModule } from "@nestjs/jwt";
 @Module({
   imports: [
     SequelizeModule.forFeature([LabTest]),
-    PatientsModule,
-    DoctorsModule,
-    RoomAssignmentsModule,
-    AppointmentsModule,
     JwtModule
   ],
   controllers: [LabTestsController],

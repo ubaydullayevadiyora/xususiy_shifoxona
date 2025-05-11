@@ -19,9 +19,8 @@ import {
   ApiBody,
 } from "@nestjs/swagger";
 import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
-import { DoctorOwnershipGuard } from "../common/guards/doctorGuard/doctorOwnership.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 import { AuthGuard } from "../common/guards/auth.guard";
+import { PatientGuard } from "../common/guards/patientGuard/patient.guard";
 
 @ApiTags("Laboratoriya testlari")
 @Controller("lab-tests")
@@ -41,7 +40,7 @@ export class LabTestsController {
     return this.labTestsService.create(createLabTestDto);
   }
 
-  @UseGuards(AuthGuard, DoctorGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard, PatientGuard)
   @Get()
   @ApiOperation({ summary: "Barcha laboratoriya testlarini ko'rish" })
   @ApiResponse({
@@ -56,7 +55,7 @@ export class LabTestsController {
     return this.labTestsService.findAll();
   }
 
-  @UseGuards(AuthGuard, DoctorOwnershipGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard, PatientGuard)
   @Get(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini ko'rish" })
   @ApiParam({
@@ -70,7 +69,7 @@ export class LabTestsController {
     return this.labTestsService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard)
   @Patch(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini yangilash" })
   @ApiParam({
@@ -89,7 +88,7 @@ export class LabTestsController {
     return this.labTestsService.update(+id, updateLabTestDto);
   }
 
-  @UseGuards(AuthGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard)
   @Delete(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini o'chirish" })
   @ApiParam({

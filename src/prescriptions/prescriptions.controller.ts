@@ -14,9 +14,7 @@ import { PrescriptionsService } from "./prescriptions.service";
 import { CreatePrescriptionDto } from "./dto/create-prescription.dto";
 import { UpdatePrescriptionDto } from "./dto/update-prescription.dto";
 import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
-import { DoctorOwnershipGuard } from "../common/guards/doctorGuard/doctorOwnership.guard";
-import { PatientGuard } from "../common/guards/patientGuard/patient.guard";
-import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
+import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
 
 @ApiTags("Prescriptions")
 @Controller("prescriptions")
@@ -43,12 +41,7 @@ export class PrescriptionsController {
     return this.prescriptionsService.findAll();
   }
 
-  @UseGuards(
-    AuthGuard,
-    DoctorGuard,
-    DoctorOwnershipGuard,
-    PatientOwnershipGuard
-  )
+  @UseGuards(AuthGuard, PatientGuard)
   @Get(":id")
   @ApiOperation({ summary: "Get a single prescription by ID" })
   @ApiParam({ name: "id", type: "number" })
@@ -58,7 +51,7 @@ export class PrescriptionsController {
     return this.prescriptionsService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard)
   @Patch(":id")
   @ApiOperation({ summary: "Update a prescription by ID" })
   @ApiParam({ name: "id", type: "number" })
@@ -74,7 +67,7 @@ export class PrescriptionsController {
     return this.prescriptionsService.update(+id, updatePrescriptionDto);
   }
 
-  @UseGuards(AuthGuard, DoctorOwnershipGuard)
+  @UseGuards(AuthGuard, DoctorGuard)
   @Delete(":id")
   @ApiOperation({ summary: "Delete a prescription by ID" })
   @ApiParam({ name: "id", type: "number" })

@@ -7,7 +7,7 @@ import { AppointmentsModule } from "../appointments/appointments.module";
 import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-  imports: [SequelizeModule.forFeature([RoomAssignment]), AppointmentsModule, JwtModule],
+  imports: [SequelizeModule.forFeature([RoomAssignment]), JwtModule],
   controllers: [RoomAssignmentsController],
   providers: [RoomAssignmentsService],
   exports: [RoomAssignmentsService],
