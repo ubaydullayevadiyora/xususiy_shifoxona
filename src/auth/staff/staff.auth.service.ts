@@ -22,7 +22,8 @@ export class StaffAuthService {
     const payload = {
       id: staff.id,
       email: staff.email,
-      role: staff.staff_name,
+      role: "staff",
+      staffRole: staff.staff_name,
     };
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -47,9 +48,11 @@ export class StaffAuthService {
       throw new BadRequestException("Email yoki parol noto'g'ri");
     }
 
-    // Faqat IT hamshira tizimga kira oladi
-    if (staff.staff_name !== "IT hamshira") {
-      throw new ForbiddenException("Faqat IT hamshira tizimga kirishi mumkin");
+    const allowedRoles = ["IT hamshira", "kassir"];
+    if (!allowedRoles.includes(staff.staff_name)) {
+      throw new ForbiddenException(
+        "Faqat IT hamshira yoki Kassir tizimga kirishi mumkin"
+      );
     }
 
     const isMatch = await bcrypt.compare(signInDto.password, staff.password);
@@ -65,10 +68,11 @@ export class StaffAuthService {
     });
 
     staff.hashed_refresh_token = await bcrypt.hash(refreshToken, 7);
+    staff.is_active = true;
     await staff.save();
 
     return {
-      message: "IT hamshira tizimga kirdi",
+      message: `${staff.staff_name} tizimga kirdi`,
       accessToken,
     };
   }

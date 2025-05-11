@@ -1,5 +1,7 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { StaffNameEnum } from "../../app.constants";
+import { Doctor } from "../../doctors/models/doctor.model";
+import { RoomAssignment } from "../../room-assignments/models/room-assignment.model";
 
 interface IStaffCreationAttr {
   first_name: string;
@@ -50,14 +52,20 @@ export class Staff extends Model<Staff, IStaffCreationAttr> {
   declare staff_name: StaffNameEnum;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  hashed_refresh_token: string | null;
+  declare hashed_refresh_token: string | null;
 
   // @Column({ type: DataType.BOOLEAN, defaultValue: false })
   // is_verified: boolean;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  is_active: boolean;
+  declare is_active: boolean;
 
   // @Column({ type: DataType.STRING, defaultValue: false })
   // activation_link: string;
+
+  // @HasMany(() => Doctor)
+  // doctor: Doctor[];
+
+  // @HasMany(() => RoomAssignment)
+  // roomAssignment: RoomAssignment[];
 }

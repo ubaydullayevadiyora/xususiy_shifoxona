@@ -1,27 +1,38 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Injectable,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
+import { StaffNameEnum } from "../../../app.constants";
 
 @Injectable()
 export class StaffGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  canActivate(context: ExecutionContext): boolean {
+    const req: any = context.switchToHttp().getRequest();
+    const user = req.user;
 
+    if (
+      user?.role === "staff" &&
+      user?.staffRole === StaffNameEnum.ITHAMSHIRA
+    ) {
+      return true;
+    }
+
+    throw new ForbiddenException("Sizga ushbu sahifaga kirishga ruxsat yoq");
+  }
+}
+
+@Injectable()
+export class CashierGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
-    if (!user) {
-      throw new ForbiddenException("Foydalanuvchi topilmadi");
+    if (user?.role === "staff" && user?.staffRole === StaffNameEnum.KASSIR) {
+      return true;
     }
 
-    if (user.role !== "staff") {
-      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo'q");
-    }
-
-    return true;
+    throw new ForbiddenException("Siz kassir sifatida kirishingiz kerak");
   }
 }

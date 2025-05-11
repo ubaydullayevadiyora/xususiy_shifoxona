@@ -17,6 +17,11 @@ export enum PaymentStatusEnum {
   PANDING = "panding",
 }
 
+export enum PaymentMethodEnum {
+  CARD = "card",
+  CASH = "cash",
+}
+
 export enum ServiceTypeEnum {
   CONSULTATION = "consultation",
   LAB_TEST = "lab_test",
@@ -42,4 +47,5 @@ export enum StaffNameEnum {
   FARROSH = "farrosh",
   HAYDOVCHI = "haydovchi",
   QOROVUL = "qorovul",
+  KASSIR = "kassir"
 }

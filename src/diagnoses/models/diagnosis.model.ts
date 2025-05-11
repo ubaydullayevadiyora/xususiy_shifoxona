@@ -1,9 +1,19 @@
-import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from "sequelize-typescript";
 import { Appointment } from "../../appointments/models/appointment.model";
 import { Prescription } from "../../prescriptions/models/prescription.model";
+import { Patient } from "../../patients/models/patient.model";
 
 interface IDiagnosesCreationAttr {
   appointment_id: number;
+  patientId: number;
   diagnose: string;
 }
 @Table({ tableName: "diagnosis" })
@@ -21,6 +31,12 @@ export class Diagnosis extends Model<Diagnosis, IDiagnosesCreationAttr> {
   })
   declare appointment_id: number;
 
+  @ForeignKey(() => Patient)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  declare patientId: number;
+
   @Column({
     type: DataType.STRING(50),
   })
@@ -28,9 +44,9 @@ export class Diagnosis extends Model<Diagnosis, IDiagnosesCreationAttr> {
 
   // ________________________ diagnosis ____________________________
 
-  @BelongsTo(() => Appointment)
-  appointment: Appointment;
+  // @BelongsTo(() => Appointment)
+  // appointment: Appointment;
 
-  @HasMany(() => Prescription)
-  prescriptions: Prescription[];
+  // @HasMany(() => Prescription)
+  // prescriptions: Prescription[];
 }

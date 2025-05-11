@@ -5,8 +5,11 @@ export class CreateDiagnosisDto {
   @IsNotEmpty()
   appointment_id: number;
 
+  @IsInt()
+  @IsNotEmpty()
+  patientId: number;
+
   @IsString()
   @IsNotEmpty()
-  @Length(600)
   diagnose: string;
 }

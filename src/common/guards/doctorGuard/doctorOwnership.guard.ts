@@ -1,19 +1,17 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  BadRequestException,
+  Injectable,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 import { PatientsService } from "../../../patients/patients.service";
 import { DoctorsService } from "../../../doctors/doctors.service";
 import { RoomAssignmentsService } from "../../../room-assignments/room-assignments.service";
 
-
 @Injectable()
 export class DoctorOwnershipGuard implements CanActivate {
   constructor(
-    private reflector: Reflector,
     private patientService: PatientsService,
     private doctorService: DoctorsService,
     private roomAssignmentService: RoomAssignmentsService
@@ -23,17 +21,34 @@ export class DoctorOwnershipGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
+    // Foydalanuvchi mavjudligini tekshirish
     if (!user) {
       throw new ForbiddenException("Foydalanuvchi topilmadi");
     }
 
+    // Foydalanuvchi doktor ekanligini tekshirish
     if (user.role !== "doctor") {
-      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo'q");
+      throw new ForbiddenException(
+        "Siz doktor sifatida ro'yxatdan o'tmagansiz"
+      );
     }
 
-    const resourceId = +request.params.id;
+    // Resurs ID sini olish
+    const resourceId = request.params.id;
 
-    const patient = await this.patientService.findOne(resourceId);
+    // Konsolga chiqarib tekshirish
+    console.log("Resource ID:", resourceId); // id ni tekshirish uchun
+
+    // ID bo'sh yoki noto'g'ri formatda bo'lsa
+    if (!resourceId || isNaN(Number(resourceId))) {
+      throw new BadRequestException("ID noto'g'ri formatda");
+    }
+
+    // ID ni raqamga aylantirish
+    const numericResourceId = Number(resourceId);
+
+    // Agar resurs bemor bo'lsa, bemorga tegishli bo'lib tekshirish
+    const patient = await this.patientService.findOne(numericResourceId);
     if (patient) {
       const isAssigned = await this.roomAssignmentService.isAssigned(
         patient.id,
@@ -42,13 +57,21 @@ export class DoctorOwnershipGuard implements CanActivate {
       if (!isAssigned) {
         throw new ForbiddenException("Siz bu bemorga biriktirilmagansiz");
       }
+      return true;
     }
 
-    const doctor = await this.doctorService.findOne(resourceId);
-    if (doctor && doctor.id !== user.id) {
-      throw new ForbiddenException("Sizning profilingizga kirish huquqi yo'q");
+    // Agar resurs doktor bo'lsa, doktor profilini tekshirish
+    const doctor = await this.doctorService.findOne(numericResourceId);
+    if (doctor) {
+      if (doctor.id !== user.id) {
+        throw new ForbiddenException(
+          "Siz boshqa doktorga tegishli profilingizga kira olmaysiz"
+        );
+      }
+      return true;
     }
 
-    return true;
+    // Agar resurs topilmasa
+    throw new ForbiddenException("Resurs topilmadi");
   }
 }

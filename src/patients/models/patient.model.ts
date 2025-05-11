@@ -13,6 +13,7 @@ interface IPatientCreationsAttr {
   gender: string;
   passport_number: string;
   address: string;
+  activation_link: string;
 }
 @Table({ tableName: "patients" })
 export class Patient extends Model<Patient, IPatientCreationsAttr> {
@@ -72,17 +73,17 @@ export class Patient extends Model<Patient, IPatientCreationsAttr> {
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   declare is_active: boolean;
 
-  @Column({ type: DataType.STRING, defaultValue: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   declare activation_link: string;
 
   // ______________________ relations _____________________
 
-  @HasMany(() => Appointment)
-  appointments: Appointment[];
+  // @HasMany(() => Appointment)
+  // appointments: Appointment[];
 
-  @HasMany(() => Payment)
-  payments: Payment[];
+  // @HasMany(() => Payment)
+  // payments: Payment[];
 
-  @HasMany(() => RoomAssignment)
-  roomAssignments: RoomAssignment[];
+  // @HasMany(() => RoomAssignment)
+  // roomAssignments: RoomAssignment[];
 }

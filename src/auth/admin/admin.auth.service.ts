@@ -48,12 +48,8 @@ export class AdminAuthService {
     );
 
     if (!admin) {
-      throw new BadRequestException("Email yoki parol noto'g'ri");
+      throw new BadRequestException("admin not found");
     }
-
-    // if (!admin.is_active) {
-    //   throw new BadRequestException("Admin hali faollashtirilmagan");
-    // }
 
     const isMatch = await bcrypt.compare(
       signInAdminDto.password,
@@ -71,7 +67,9 @@ export class AdminAuthService {
       maxAge: Number(process.env.COOKIE_TIME_REFRESH),
     });
 
+    // Refresh tokenni saqlashdan oldin uni hash qilish
     admin.hashed_refresh_token = await bcrypt.hash(refreshToken, 7);
+    admin.is_active = true;
     await admin.save();
 
     return {

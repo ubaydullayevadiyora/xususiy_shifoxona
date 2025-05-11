@@ -13,14 +13,12 @@ import { DiagnosesModule } from "./diagnoses/diagnoses.module";
 import { PrescriptionsModule } from "./prescriptions/prescriptions.module";
 import { PaymentsModule } from "./payments/payments.module";
 import { PaymentDetailsModule } from "./payment-details/payment-details.module";
-import { ServicePriceModule } from "./service-price/service-price.module";
 import { RoomsModule } from "./rooms/rooms.module";
 import { RoomAssignmentsModule } from "./room-assignments/room-assignments.module";
 import { Patient } from "./patients/models/patient.model";
 import { Doctor } from "./doctors/models/doctor.model";
 import { Admin } from "./admins/models/admin.model";
 import { Staff } from "./staffs/models/staff.model";
-import { ServicePrice } from "./service-price/models/service-price.model";
 import { Room } from "./rooms/models/room.model";
 import { RoomAssignment } from "./room-assignments/models/room-assignment.model";
 import { Prescription } from "./prescriptions/models/prescription.model";
@@ -30,6 +28,7 @@ import { LabTest } from "./lab-tests/models/lab-test.model";
 import { Diagnosis } from "./diagnoses/models/diagnosis.model";
 import { Appointment } from "./appointments/models/appointment.model";
 import { AuthModule } from "./auth/auth.module";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
   imports: [
@@ -56,7 +55,6 @@ import { AuthModule } from "./auth/auth.module";
         Doctor,
         Admin,
         Staff,
-        ServicePrice,
         Room,
         RoomAssignment,
         Prescription,
@@ -67,7 +65,7 @@ import { AuthModule } from "./auth/auth.module";
         Appointment,
       ],
       autoLoadModels: true,
-      sync: { alter: true },
+      sync: { force: true },
       logging: false,
     }),
 
@@ -91,12 +89,10 @@ import { AuthModule } from "./auth/auth.module";
 
     PaymentDetailsModule,
 
-    ServicePriceModule,
-
     RoomsModule,
 
     RoomAssignmentsModule,
-    
+
     AuthModule,
   ],
   controllers: [],

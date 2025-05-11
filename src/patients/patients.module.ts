@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import {  Module } from "@nestjs/common";
 import { PatientsService } from "./patients.service";
 import { PatientsController } from "./patients.controller";
 import { SequelizeModule } from "@nestjs/sequelize";
@@ -6,9 +6,13 @@ import { Patient } from "./models/patient.model";
 import { MailModule } from "../mail/mail.module";
 
 @Module({
-  imports: [SequelizeModule.forFeature([Patient]), MailModule],
+  imports: [
+    SequelizeModule.forFeature([Patient]),
+    MailModule,
+    
+  ],
   controllers: [PatientsController],
   providers: [PatientsService],
-  exports: [PatientsService],
+  exports: [PatientsService, SequelizeModule],
 })
 export class PatientsModule {}

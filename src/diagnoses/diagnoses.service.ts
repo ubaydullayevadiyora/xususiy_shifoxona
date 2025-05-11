@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Diagnosis } from './models/diagnosis.model';
 import { CreateDiagnosisDto } from './dto/create-diagnosis.dto';
 import { UpdateDiagnosisDto } from './dto/update-diagnosis.dto';
 
 @Injectable()
 export class DiagnosesService {
-  create(createDiagnosisDto: CreateDiagnosisDto) {
-    return 'This action adds a new diagnosis';
+  constructor(
+    @InjectModel(Diagnosis)
+    private readonly diagnoseModel: typeof Diagnosis
+  ) {}
+
+  async create(createDiagnoseDto: CreateDiagnosisDto): Promise<Diagnosis> {
+    try {
+      return await this.diagnoseModel.create(createDiagnoseDto);
+    } catch (error) {
+      console.error(error);
+      throw new Error("Diagnosis yaratishda xatolik");
+    }
   }
 
-  findAll() {
-    return `This action returns all diagnoses`;
+  async findAll(): Promise<Diagnosis[]> {
+    return await this.diagnoseModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} diagnosis`;
+  async findOne(id: number): Promise<Diagnosis> {
+    const diagnose = await this.diagnoseModel.findByPk(id);
+    if (!diagnose) {
+      throw new NotFoundException(`Diagnose with ID ${id} not found`);
+    }
+    return diagnose;
   }
 
-  update(id: number, updateDiagnosisDto: UpdateDiagnosisDto) {
-    return `This action updates a #${id} diagnosis`;
+  async update(
+    id: number,
+    updateDiagnoseDto: UpdateDiagnosisDto
+  ): Promise<Diagnosis> {
+    const diagnose = await this.diagnoseModel.findByPk(id);
+    if (!diagnose) {
+      throw new NotFoundException(`Diagnose with ID ${id} not found`);
+    }
+    await diagnose.update(updateDiagnoseDto);
+    return diagnose;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} diagnosis`;
+  async remove(id: number): Promise<void> {
+    const diagnose = await this.diagnoseModel.findByPk(id);
+    if (!diagnose) {
+      throw new NotFoundException(`Diagnose with ID ${id} not found`);
+    }
+    await diagnose.destroy();
   }
 }

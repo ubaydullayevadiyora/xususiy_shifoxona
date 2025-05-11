@@ -11,19 +11,14 @@ import {
 
 export class CreateAppointmentDto {
   @ApiProperty({ example: 1, description: "Xizmat narxi ID raqami" })
-  @IsInt()
-  @Min(1)
-  service_price_id: number;
+  paymentDetailsId: number;
 
   @ApiProperty({ example: 3, description: "Shifokor ID raqami" })
-  @IsInt()
-  @Min(1)
-  doctor_id: number;
+
+  doctorId: number;
 
   @ApiProperty({ example: 7, description: "Bemor ID raqami" })
-  @IsInt()
-  @Min(1)
-  patient_id: number;
+  patientId: number;
 
   @ApiProperty({
     example: "Bemor analiz uchun keladi",

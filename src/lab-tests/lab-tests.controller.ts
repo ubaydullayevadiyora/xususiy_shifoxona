@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from "@nestjs/common";
 import { LabTestsService } from "./lab-tests.service";
 import { CreateLabTestDto } from "./dto/create-lab-test.dto";
@@ -17,12 +18,18 @@ import {
   ApiParam,
   ApiBody,
 } from "@nestjs/swagger";
+import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
+import { DoctorOwnershipGuard } from "../common/guards/doctorGuard/doctorOwnership.guard";
+import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
+import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
+import { AuthGuard } from "../common/guards/auth.guard";
 
 @ApiTags("Laboratoriya testlari")
 @Controller("lab-tests")
 export class LabTestsController {
   constructor(private readonly labTestsService: LabTestsService) {}
 
+  @UseGuards(AuthGuard, DoctorGuard, DoctorOwnershipGuard)
   @Post()
   @ApiOperation({ summary: "Yangi laboratoriya testi yaratish" })
   @ApiBody({ type: CreateLabTestDto })
@@ -35,6 +42,7 @@ export class LabTestsController {
     return this.labTestsService.create(createLabTestDto);
   }
 
+  @UseGuards(AuthGuard ,DoctorOwnershipGuard, StaffGuard, PatientOwnershipGuard)
   @Get()
   @ApiOperation({ summary: "Barcha laboratoriya testlarini ko'rish" })
   @ApiResponse({
@@ -49,6 +57,7 @@ export class LabTestsController {
     return this.labTestsService.findAll();
   }
 
+  @UseGuards(AuthGuard, DoctorOwnershipGuard, StaffGuard, PatientOwnershipGuard)
   @Get(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini ko'rish" })
   @ApiParam({
@@ -62,6 +71,7 @@ export class LabTestsController {
     return this.labTestsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard, DoctorOwnershipGuard)
   @Patch(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini yangilash" })
   @ApiParam({
@@ -80,6 +90,7 @@ export class LabTestsController {
     return this.labTestsService.update(+id, updateLabTestDto);
   }
 
+  @UseGuards(AuthGuard, DoctorOwnershipGuard)
   @Delete(":id")
   @ApiOperation({ summary: "ID bo'yicha laboratoriya testini o'chirish" })
   @ApiParam({

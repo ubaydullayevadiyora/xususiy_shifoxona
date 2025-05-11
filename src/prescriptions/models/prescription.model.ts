@@ -3,52 +3,64 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
 import { Diagnosis } from "../../diagnoses/models/diagnosis.model";
+import { Appointment } from "../../appointments/models/appointment.model";
 
-interface IPrescriptionCreationAttr {
-  diagnosis_id: number;
+export interface PrescriptionCreationAttrs {
+  diagnosisId: number;
+  appointmentId: number;
   medicines: string;
   dosage: string;
-  instructions: string;
+  instructions?: string;
 }
 
-@Table({ tableName: "prescription" }) 
-export class Prescription extends Model<
-  Prescription,
-  IPrescriptionCreationAttr
-> {
+@Table({ tableName: "prescriptions" })
+export class Prescription extends Model<Prescription, PrescriptionCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
   })
   declare id: number;
 
-  @ForeignKey(() => Diagnosis) 
+  @ForeignKey(() => Diagnosis)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  declare diagnosis_id: number;
+  declare diagnosisId: number;
+
+  @ForeignKey(() => Appointment)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  declare appointmentId: number;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare medicines: string;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare dosage: string;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.STRING,
+    allowNull: true,
   })
   declare instructions: string;
 
-  @BelongsTo(() => Diagnosis) 
-  diagnosis: Diagnosis;
+  //__________________
+
+  // @BelongsTo(() => Diagnosis)
+  // diagnosis: Diagnosis;
 }

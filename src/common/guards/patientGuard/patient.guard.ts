@@ -4,22 +4,20 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 
 @Injectable()
 export class PatientGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const req: any = context.switchToHttp().getRequest();
+    const user = req.user;
 
     if (!user) {
-      throw new ForbiddenException("Foydalanuvchi topilmadi");
+      throw new ForbiddenException("Foydalanuvchi p topilmadi");
     }
 
     if (user.role !== "patient") {
-      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo'q");
+      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo''q");
     }
 
     return true;

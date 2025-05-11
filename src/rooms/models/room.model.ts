@@ -1,14 +1,13 @@
-import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
-import { RoomStatusEnum, RoomTypeEnum } from "../../app.constants";
+import { Doctor } from "../../doctors/models/doctor.model";
 import { RoomAssignment } from "../../room-assignments/models/room-assignment.model";
+import { RoomStatusEnum, RoomTypeEnum } from "./../../app.constants";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 
 interface IRoomCreationAttr {
-  patient_id: number;
-  doctor_id: number;
-  staff_id: number;
-  room_id: number;
-  assigned_at: Date;
-  released_at: Date;
+  room_number: number;
+  room_type: RoomTypeEnum;
+  status: RoomStatusEnum;
+  floor: number;
 }
 @Table({ tableName: "rooms" })
 export class Room extends Model<Room, IRoomCreationAttr> {
@@ -45,6 +44,9 @@ export class Room extends Model<Room, IRoomCreationAttr> {
 
   // ________________________ room _____________________
 
-  @HasMany(() => RoomAssignment)
-  roomAssignments: RoomAssignment[];
+  // @HasMany(() => RoomAssignment)
+  // roomAssignments: RoomAssignment[];
+
+  // @HasMany(() => Doctor)
+  // doctor: Doctor[];
 }

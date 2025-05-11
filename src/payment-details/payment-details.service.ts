@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePaymentDetailDto } from './dto/create-payment-detail.dto';
-import { UpdatePaymentDetailDto } from './dto/update-payment-detail.dto';
+import { InjectModel } from "@nestjs/sequelize";
+import { PaymentDetail } from "./models/payment-detail.model";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreatePaymentDetailDto } from "./dto/create-payment-detail.dto";
+import { UpdatePaymentDetailDto } from "./dto/update-payment-detail.dto";
+
 
 @Injectable()
 export class PaymentDetailsService {
-  create(createPaymentDetailDto: CreatePaymentDetailDto) {
-    return 'This action adds a new paymentDetail';
+  constructor(
+    @InjectModel(PaymentDetail)
+    private readonly paymentDetailModel: typeof PaymentDetail
+  ) {}
+
+  async create(
+    createPaymentDetailDto: CreatePaymentDetailDto
+  ): Promise<PaymentDetail> {
+    return await this.paymentDetailModel.create(createPaymentDetailDto);
   }
 
-  findAll() {
-    return `This action returns all paymentDetails`;
+  async findAll(): Promise<PaymentDetail[]> {
+    return await this.paymentDetailModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paymentDetail`;
+  async findOne(id: number): Promise<PaymentDetail> {
+    const paymentDetail = await this.paymentDetailModel.findByPk(id);
+    if (!paymentDetail) {
+      throw new NotFoundException(`PaymentDetail with ID ${id} not found`);
+    }
+    return paymentDetail;
   }
 
-  update(id: number, updatePaymentDetailDto: UpdatePaymentDetailDto) {
-    return `This action updates a #${id} paymentDetail`;
+  async update(
+    id: number,
+    updatePaymentDetailDto: UpdatePaymentDetailDto
+  ): Promise<PaymentDetail> {
+    const paymentDetail = await this.paymentDetailModel.findByPk(id);
+    if (!paymentDetail) {
+      throw new NotFoundException(`PaymentDetail with ID ${id} not found`);
+    }
+    await paymentDetail.update(updatePaymentDetailDto);
+    return paymentDetail;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} paymentDetail`;
+  async remove(id: number): Promise<void> {
+    const paymentDetail = await this.paymentDetailModel.findByPk(id);
+    if (!paymentDetail) {
+      throw new NotFoundException(`PaymentDetail with ID ${id} not found`);
+    }
+    await paymentDetail.destroy();
   }
 }

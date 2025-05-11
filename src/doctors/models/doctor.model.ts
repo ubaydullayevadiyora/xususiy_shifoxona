@@ -76,12 +76,12 @@ export class Doctor extends Model<Doctor, IDoctorCreationAttr> {
 
   // ________________ doctor ______________________
 
-  @BelongsTo(() => Staff)
-  staff: Staff;
+  // @BelongsTo(() => Staff)
+  // staff: Staff;
 
-  @HasMany(() => Appointment)
-  appointments: Appointment[];
+  // @HasMany(() => Appointment)
+  // appointments: Appointment[];
 
-  @HasMany(() => RoomAssignment)
-  roomAssignments: RoomAssignment[];
+  // @HasMany(() => RoomAssignment)
+  // roomAssignments: RoomAssignment[];
 }

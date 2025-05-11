@@ -1,8 +1,10 @@
+import { MailService } from "./../../mail/mail.service";
 import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
+  ServiceUnavailableException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { Patient } from "../../patients/models/patient.model";
@@ -12,12 +14,16 @@ import * as bcrypt from "bcrypt";
 import { PatientsService } from "../../patients/patients.service";
 import { Response } from "express";
 import { CreatePatientDto } from "../../patients/dto/create-patient.dto";
+import { v4 as uuidv4 } from "uuid";
+import { InjectModel } from "@nestjs/sequelize";
 
 @Injectable()
 export class PatientAuthService {
   constructor(
     private readonly patientService: PatientsService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    @InjectModel(Patient) private readonly patientModel: typeof Patient,
+    private readonly mailService: MailService
   ) {}
 
   async generateTokens(patient: Patient) {
@@ -52,8 +58,33 @@ export class PatientAuthService {
       throw new ConflictException("Bunday emailli bemor mavjud");
     }
 
-    const newPatient = await this.patientService.create(createPatientDto);
-    return { message: "Bemor ro'yxatdan o'tdi", patientId: newPatient.id };
+    const { password, ...otherData } = createPatientDto;
+
+    if (!password) {
+      throw new BadRequestException("Parol kiritilmagan");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 7);
+
+    const newPatient = await this.patientModel.create({
+      ...otherData,
+      password: hashedPassword,
+      activation_link: uuidv4(),
+    });
+
+    // const newPatient = await this.patientModel.create({
+    //   ...createPatientDto,
+    //   activation_link: uuidv4(),
+    // });
+
+    try {
+      await this.mailService.sendMail(newPatient);
+    } catch (error) {
+      console.log(error);
+      throw new ServiceUnavailableException("Email yuborishda xatolik");
+    }
+
+    return { message: "Bemor ro'yxatdan o'tdi. Endi emailingizni activlashtiring", patientId: newPatient.id };
   }
 
   async signIn(signInDto: SignInPatientDto, res: Response) {
@@ -154,5 +185,24 @@ export class PatientAuthService {
       message: "Tokenlar yangilandi",
       accessToken,
     };
+  }
+
+  async verifyEmail(activation_link: string) {
+    const patient =
+      await this.patientService.findPatientByActivationLink(activation_link);
+
+    if (!patient) {
+      throw new BadRequestException("Noto'g'ri yoki eskirgan link");
+    }
+
+    if (patient.is_verified) {
+      return { message: "Email allaqachon tasdiqlangan" };
+    }
+
+    patient.is_verified = true;
+    patient.is_active = true;
+    await patient.save();
+
+    return { message: "Email tasdiqlandi. Endi sign in qilishingiz mumkin" };
   }
 }

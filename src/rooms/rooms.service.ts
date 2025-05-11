@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateRoomDto } from "./dto/create-room.dto";
+import { UpdateRoomDto } from "./dto/update-room.dto";
+import { InjectModel } from "@nestjs/sequelize";
+import { Room } from "./models/room.model";
 
 @Injectable()
 export class RoomsService {
-  create(createRoomDto: CreateRoomDto) {
-    return 'This action adds a new room';
+  constructor(@InjectModel(Room) private readonly roomModel: typeof Room) {}
+
+  async create(createRoomDto: CreateRoomDto) {
+    try {
+      const newRoom = await this.roomModel.create(createRoomDto);
+      return newRoom;
+    } catch (error) {
+      console.error("Error creating room:", error);
+      throw new Error("Error creating room");
+    }
   }
 
-  findAll() {
-    return `This action returns all rooms`;
+  async findAll() {
+    return await this.roomModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} room`;
+  async findOne(id: number) {
+    const room = await this.roomModel.findByPk(id);
+    if (!room) {
+      throw new Error(`Room with id ${id} not found`);
+    }
+    return room;
   }
 
-  update(id: number, updateRoomDto: UpdateRoomDto) {
-    return `This action updates a #${id} room`;
+  async update(id: number, updateRoomDto: UpdateRoomDto) {
+    const room = await this.findOne(id);
+    return await room.update(updateRoomDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+  async remove(id: number) {
+    const room = await this.findOne(id);
+    await room.destroy();
+    return { message: `Room with id ${id} has been removed` };
   }
 }

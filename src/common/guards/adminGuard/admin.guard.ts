@@ -4,22 +4,20 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const req: any = context.switchToHttp().getRequest();
+    const user = req.user;
 
     if (!user) {
-      throw new ForbiddenException("Foydalanuvchi topilmadi");
+      throw new ForbiddenException("Foydalanuvchii topilmadi");
     }
 
     if (user.role !== "admin") {
-      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo'q");
+      throw new ForbiddenException("Sizdaa ushbu sahifaga kirish huquqi yo'q");
     }
 
     return true;

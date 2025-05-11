@@ -1,26 +1,51 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Payment } from './models/payment.model';
 
 @Injectable()
 export class PaymentsService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(
+    @InjectModel(Payment)
+    private readonly paymentModel: typeof Payment
+  ) {}
+
+  async create(
+    createPaymentDto: CreatePaymentDto
+  ): Promise<Payment> {
+    return await this.paymentModel.create(createPaymentDto);
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll(): Promise<Payment[]> {
+    return await this.paymentModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(id: number): Promise<Payment> {
+    const payment = await this.paymentModel.findByPk(id);
+    if (!payment) {
+      throw new NotFoundException(`Payment with ID ${id} not found`);
+    }
+    return payment;
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(
+    id: number,
+    updatePaymentDto: UpdatePaymentDto
+  ): Promise<Payment> {
+    const payment = await this.paymentModel.findByPk(id);
+    if (!payment) {
+      throw new NotFoundException(`Payment with ID ${id} not found`);
+    }
+    await payment.update(updatePaymentDto);
+    return payment;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(id: number): Promise<void> {
+    const payment = await this.paymentModel.findByPk(id);
+    if (!payment) {
+      throw new NotFoundException(`Payment with ID ${id} not found`);
+    }
+    await payment.destroy();
   }
 }

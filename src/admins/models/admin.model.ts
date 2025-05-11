@@ -31,18 +31,18 @@ export class Admin extends Model<Admin, IAdminCreationAttr> {
   declare email: string;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.STRING,
   })
   declare password: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  hashed_refresh_token: string | null;
+  declare hashed_refresh_token: string | null;
 
   // @Column({ type: DataType.BOOLEAN, defaultValue: false })
   // is_verified: boolean;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  is_active: boolean;
+  declare is_active: boolean;
 
   // @Column({ type: DataType.STRING, defaultValue: false })
   // activation_link: string;

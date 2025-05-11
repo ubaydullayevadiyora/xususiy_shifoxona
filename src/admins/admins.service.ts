@@ -3,12 +3,17 @@ import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { Admin } from "./models/admin.model";
 import { InjectModel } from "@nestjs/sequelize";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AdminsService {
   constructor(@InjectModel(Admin) private readonly adminModel: typeof Admin) {}
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
-    const newAdmin = await this.adminModel.create(createAdminDto);
+    const hashedPassword = await bcrypt.hash(createAdminDto.password, 7);
+    const newAdmin = await this.adminModel.create({
+      ...createAdminDto,
+      password: hashedPassword,
+    });
     return newAdmin;
   }
 
@@ -37,6 +42,8 @@ export class AdminsService {
   }
 
   async findAdminByEmail(email: string): Promise<Admin> {
+    console.log(email);
+    
     const admin = await this.adminModel.findOne({ where: { email } });
     if (!admin) {
       throw new NotFoundException(`Admin with email ${email} not found`);

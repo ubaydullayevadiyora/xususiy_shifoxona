@@ -7,16 +7,17 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { PaymentStatusEnum } from "../../app.constants";
+import { PaymentMethodEnum, PaymentStatusEnum } from "../../app.constants";
 import { Patient } from "../../patients/models/patient.model";
-import { ServicePrice } from "../../service-price/models/service-price.model";
-import { PaymentDetail } from "../../payment-details/models/payment-detail.model";
 import { Staff } from "../../staffs/models/staff.model";
+import { PaymentDetail } from "../../payment-details/models/payment-detail.model";
+import { Appointment } from "../../appointments/models/appointment.model";
 
 interface IPaymentCreationAttr {
   service_price_id: number;
   patient_id: number;
   total_amount: string;
+  method:PaymentMethodEnum
   status: PaymentStatusEnum;
   paid_at: Date;
   cashier_id: number;
@@ -29,12 +30,6 @@ export class Payment extends Model<Payment, IPaymentCreationAttr> {
     primaryKey: true,
   })
   declare id: number;
-
-  @ForeignKey(() => ServicePrice)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare service_price_id: number;
 
   @ForeignKey(() => Patient)
   @Column({
@@ -67,12 +62,12 @@ export class Payment extends Model<Payment, IPaymentCreationAttr> {
 
   // ______________ payments_______________
 
-  @BelongsTo(() => Patient)
-  patient: Patient;
+  // @BelongsTo(() => Patient)
+  // patient: Patient;
 
-  @BelongsTo(() => ServicePrice)
-  servicePrice: ServicePrice;
+  // @HasMany(() => PaymentDetail)
+  // paymentDetails: PaymentDetail[];
 
-  @HasMany(() => PaymentDetail)
-  paymentDetails: PaymentDetail[];
+  // @HasMany(() => Appointment)
+  // appointment: Appointment[];
 }

@@ -21,16 +21,4 @@ export class MailService {
       },
     });
   }
-
-  // adminlar uchun
-  async sendAdminMail(admin: Admin) {
-    await this.mailerService.sendMail({
-      to: admin.email,
-      subject: "Welcome to Xususiy shifoxona Admin Panel!",
-      template: "./confirmation",
-      context: {
-        name: admin.fullname,
-      },
-    });
-  }
 }

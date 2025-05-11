@@ -6,6 +6,7 @@ import {
   Res,
   Get,
   HttpCode,
+  Param,
 } from "@nestjs/common";
 import { SignInPatientDto } from "./dto/sign-in.dto";
 import { PatientAuthService } from "./patient.auth.service";
@@ -50,5 +51,10 @@ export class PatientAuthController {
   ) {
     const refresh_token = req.cookies?.refresh_token;
     return this.patientAuthService.refreshToken(refresh_token, res);
+  }
+
+  @Get("verify/:activation_link")
+  async verifyPatientEmail(@Param("activation_link") link: string) {
+    return this.patientAuthService.verifyEmail(link);
   }
 }

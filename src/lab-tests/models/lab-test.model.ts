@@ -8,7 +8,6 @@ import {
 } from "sequelize-typescript";
 import { TestTypeEnum } from "../../app.constants";
 import { Appointment } from "../../appointments/models/appointment.model";
-import { ServicePrice } from "../../service-price/models/service-price.model";
 
 interface ILabTestsCreationAttr {
   service_price_id: number;
@@ -26,12 +25,6 @@ export class LabTest extends Model<LabTest, ILabTestsCreationAttr> {
     primaryKey: true,
   })
   declare id: number;
-
-  @ForeignKey(() => ServicePrice)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare service_price_id: number;
 
   @ForeignKey(() => Appointment)
   @Column({
@@ -58,9 +51,6 @@ export class LabTest extends Model<LabTest, ILabTestsCreationAttr> {
 
   // ________________________ lab-test ________________________
 
-  @BelongsTo(() => Appointment)
-  appointment: Appointment;
-
-  @BelongsTo(() => ServicePrice)
-  servicePrice: ServicePrice;
+  // @BelongsTo(() => Appointment)
+  // appointment: Appointment;
 }

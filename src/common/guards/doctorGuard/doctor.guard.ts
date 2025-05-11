@@ -1,25 +1,23 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Injectable,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 
 @Injectable()
 export class DoctorGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
-
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
-
+    const req: any = context.switchToHttp().getRequest();
+    const user = req.user;
+    console.log(user);
+    
     if (!user) {
-      throw new ForbiddenException("Foydalanuvchi topilmadi");
+      throw new ForbiddenException("doctor topilmadi");
     }
 
     if (user.role !== "doctor") {
-      throw new ForbiddenException("Sizda ushbu sahifaga kirish huquqi yo'q");
+      throw new ForbiddenException("Faqat shifokorlar uchun ruxsat berilgan");
     }
 
     return true;

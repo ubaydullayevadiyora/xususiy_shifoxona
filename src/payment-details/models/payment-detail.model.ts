@@ -7,7 +7,6 @@ import {
   Table,
 } from "sequelize-typescript";
 import { Payment } from "../../payments/models/payment.model";
-import { ServicePrice } from "../../service-price/models/service-price.model";
 
 interface IPaymentDetailsCreationAttr {
   payment_id: number;
@@ -34,12 +33,6 @@ export class PaymentDetail extends Model<
   })
   declare payment_id: number;
 
-  @ForeignKey(() => ServicePrice)
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare service_price_id: number;
-
   @Column({
     type: DataType.DECIMAL(10, 2),
   })
@@ -50,9 +43,8 @@ export class PaymentDetail extends Model<
   })
   declare description: string;
 
-  @BelongsTo(() => ServicePrice)
-  servicePrice: ServicePrice;
+  // _________________________
 
-  @BelongsTo(() => Payment)
-  payment: Payment;
+  // @BelongsTo(() => Payment)
+  // payment: Payment;
 }

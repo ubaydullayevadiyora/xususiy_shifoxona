@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -25,11 +26,12 @@ export class AdminAuthController {
     description: "Admin muvaffaqiyatli tizimga kirdi",
   })
   @ApiResponse({ status: 401, description: "Login yoki parol noto'g'ri" })
-  async signIn(
-    @Body() signInDto: SignInAdminDto, 
-    @Res({ passthrough: true }) res: Response
-  ) {
-    return this.adminAuthService.signIn(signInDto, res); 
+  // @Post("sign-in")
+  async signIn(@Body() signInAdminDto: SignInAdminDto, @Res() res: Response) {
+    if (!signInAdminDto?.email) {
+      throw new BadRequestException("Email kiritilmagan");
+    }
+    return this.adminAuthService.signIn(signInAdminDto, res);
   }
 
   @Post("sign-out")

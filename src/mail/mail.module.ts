@@ -21,7 +21,7 @@ import { MailerModule } from "@nestjs-modules/mailer";
           from: `"xususiy shifoxona" <${config.get<string>("SMTP_HOST")}>`,
         },
         template: {
-          dir: join(__dirname, "templates"),
+          dir: join(__dirname, "..", "mail", "templates"),
           adapter: new HandlebarsAdapter(),
           template: "confirmation",
           options: {

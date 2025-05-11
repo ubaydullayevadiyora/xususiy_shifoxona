@@ -6,17 +6,20 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from "@nestjs/common";
 import { StaffsService } from "./staffs.service";
 import { CreateStaffDto } from "./dto/create-staff.dto";
 import { UpdateStaffDto } from "./dto/update-staff.dto";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
+import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
 
 @ApiTags("staffs")
 @Controller("staffs")
 export class StaffsController {
   constructor(private readonly staffsService: StaffsService) {}
 
+  // @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Xodim yaratish" })
   @ApiResponse({ status: 201, description: "Xodim muvaffaqiyatli yaratildi." })
   @Post()
@@ -24,6 +27,7 @@ export class StaffsController {
     return this.staffsService.create(createStaffDto);
   }
 
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Barcha xodimlarni ko'rish" })
   @ApiResponse({ status: 200, description: "Barcha xodimlar ro'yxati." })
   @Get()
@@ -31,6 +35,7 @@ export class StaffsController {
     return this.staffsService.findAll();
   }
 
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Bir xodimni ko'rish" })
   @ApiParam({ name: "id", description: "Xodimning ID raqami" })
   @ApiResponse({ status: 200, description: "Xodim ma'lumotlari." })
@@ -40,6 +45,7 @@ export class StaffsController {
     return this.staffsService.findOne(+id);
   }
 
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Xodimni yangilash" })
   @ApiParam({ name: "id", description: "Yangilanadigan xodimning ID raqami" })
   @ApiResponse({ status: 200, description: "Xodim muvaffaqiyatli yangilandi." })
@@ -49,6 +55,7 @@ export class StaffsController {
     return this.staffsService.update(+id, updateStaffDto);
   }
 
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: "Xodimni o'chirish" })
   @ApiParam({ name: "id", description: "O'chiriladigan xodimning ID raqami" })
   @ApiResponse({ status: 200, description: "Xodim muvaffaqiyatli o'chirildi." })

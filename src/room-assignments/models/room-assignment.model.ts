@@ -71,12 +71,15 @@ export class RoomAssignment extends Model<
 
   // __________________________ room-assignment _________________________
 
-  @BelongsTo(() => Patient)
-  patient: Patient;
+  // @BelongsTo(() => Patient)
+  // patient: Patient;
 
-  @BelongsTo(() => Room)
-  room: Room;
+  // @BelongsTo(() => Room)
+  // room: Room;
 
-  @BelongsTo(() => Doctor)
-  doctor: Doctor;
+  // @BelongsTo(() => Doctor)
+  // doctor: Doctor;
+
+  // @BelongsTo(() => Staff)
+  // staff: Staff;
 }

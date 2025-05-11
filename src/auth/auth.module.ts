@@ -15,6 +15,7 @@ import { PatientAuthController } from "./patient/patient.auth.controller";
 import { StaffAuthController } from "./staff/staff.auth.controller";
 import { AdminAuthController } from "./admin/admin.auth.controller";
 import { DoctorAuthController } from "./doctor/doctor.auth.controller";
+import { MailModule } from "../mail/mail.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { DoctorAuthController } from "./doctor/doctor.auth.controller";
     AdminsModule,
     DoctorsModule,
     StaffsModule,
+    MailModule,
   ],
   controllers: [
     PatientAuthController,

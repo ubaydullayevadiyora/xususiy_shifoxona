@@ -36,4 +36,6 @@ export class CreatePatientDto {
 
   @IsString()
   address: string;
+
+  activation_link: string;
 }

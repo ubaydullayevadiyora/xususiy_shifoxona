@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PaymentStatusEnum } from "../../app.constants";
+import { PaymentMethodEnum, PaymentStatusEnum } from "../../app.constants";
 
 export class CreatePaymentDto {
   @ApiProperty({ example: 1, description: "Xizmat narxi ID raqami" })
@@ -10,6 +10,13 @@ export class CreatePaymentDto {
 
   @ApiProperty({ example: "100.50", description: "To'lov miqdori" })
   total_amount: string;
+
+  @ApiProperty({
+    enum: PaymentMethodEnum,
+    example: PaymentMethodEnum.CARD,
+    description: "To'lov turi (masalan: CASH, CARD)",
+  })
+  method: PaymentMethodEnum;
 
   @ApiProperty({
     enum: PaymentStatusEnum,

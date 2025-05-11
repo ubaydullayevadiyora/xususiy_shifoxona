@@ -3,7 +3,6 @@ import {
   IsEmail,
   Length,
   IsNotEmpty,
-  IsOptional,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -42,12 +41,4 @@ export class CreateStaffDto {
   @IsString()
   @IsNotEmpty()
   staff_name: string;
-
-  @ApiProperty({
-    description: "Xodim uchun refresh token",
-    example: "some_refresh_token",
-    required: false,
-  })
-  @IsOptional()
-  refreshToken: string;
 }

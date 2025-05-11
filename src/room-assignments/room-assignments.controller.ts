@@ -1,3 +1,4 @@
+import { AuthGuard } from './../common/guards/auth.guard';
 import {
   ApiTags,
   ApiOperation,
@@ -13,10 +14,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from "@nestjs/common";
 import { RoomAssignmentsService } from "./room-assignments.service";
 import { CreateRoomAssignmentDto } from "./dto/create-room-assignment.dto";
 import { UpdateRoomAssignmentDto } from "./dto/update-room-assignment.dto";
+import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
+import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
+import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 
 @ApiTags("Xona tayinlashlar")
 @Controller("room-assignments")
@@ -25,6 +30,7 @@ export class RoomAssignmentsController {
     private readonly roomAssignmentsService: RoomAssignmentsService
   ) {}
 
+  @UseGuards(AuthGuard, StaffGuard)
   @Post()
   @ApiOperation({ summary: "Yangi xona tayinlashni yaratish" })
   @ApiBody({ type: CreateRoomAssignmentDto })
@@ -36,6 +42,7 @@ export class RoomAssignmentsController {
     return this.roomAssignmentsService.create(createRoomAssignmentDto);
   }
 
+  @UseGuards(AuthGuard, StaffGuard)
   @Get()
   @ApiOperation({ summary: "Barcha xona tayinlashlarni ko'rish" })
   @ApiResponse({
@@ -46,6 +53,7 @@ export class RoomAssignmentsController {
     return this.roomAssignmentsService.findAll();
   }
 
+  @UseGuards(AuthGuard, StaffGuard)
   @Get(":id")
   @ApiOperation({ summary: "ID bo'yicha xona tayinlashni olish" })
   @ApiParam({ name: "id", description: "Xona tayinlash ID" })
@@ -58,6 +66,7 @@ export class RoomAssignmentsController {
     return this.roomAssignmentsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard, StaffGuard)
   @Patch(":id")
   @ApiOperation({ summary: "Xona tayinlashni yangilash" })
   @ApiParam({ name: "id", description: "Xona tayinlash ID" })
@@ -74,6 +83,7 @@ export class RoomAssignmentsController {
     return this.roomAssignmentsService.update(+id, updateRoomAssignmentDto);
   }
 
+  @UseGuards(AuthGuard, StaffGuard)
   @Delete(":id")
   @ApiOperation({ summary: "Xona tayinlashni o'chirish" })
   @ApiParam({ name: "id", description: "Xona tayinlash ID" })
