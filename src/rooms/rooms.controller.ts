@@ -12,7 +12,6 @@ import { RoomsService } from "./rooms.service";
 import { CreateRoomDto } from "./dto/create-room.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
 import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
 import { AuthGuard } from "../common/guards/auth.guard";
 

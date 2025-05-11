@@ -17,13 +17,14 @@ import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
 import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
 import { PatientOwnershipGuard } from '../common/guards/patientGuard/patientOwnership.guard';
 import { CashierOwnershipGuard } from '../common/guards/staffGuard/staffOwnership.guard';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @ApiTags("Payment Details")
 @Controller("payment-details")
 export class PaymentDetailsController {
   constructor(private readonly paymentDetailsService: PaymentDetailsService) {}
 
-  @UseGuards(AdminGuard, CashierGuard, PatientGuard)
+  @UseGuards(AuthGuard, AdminGuard, CashierGuard, PatientGuard)
   @ApiOperation({ summary: "Create a payment detail" })
   @ApiResponse({
     status: 201,
@@ -35,7 +36,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.create(createPaymentDetailDto);
   }
 
-  @UseGuards(AdminGuard, CashierGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, AdminGuard, CashierGuard)
   @ApiOperation({ summary: "Get all payment details" })
   @ApiResponse({ status: 200, description: "List of all payment details." })
   @Get()
@@ -43,7 +44,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.findAll();
   }
 
-  @UseGuards(AdminGuard, CashierGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, AdminGuard, CashierGuard)
   @ApiOperation({ summary: "Get a payment detail by ID" })
   @ApiResponse({ status: 200, description: "The payment detail found." })
   @ApiResponse({ status: 404, description: "Payment detail not found" })
@@ -52,7 +53,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.findOne(+id);
   }
 
-  @UseGuards(CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierOwnershipGuard)
   @ApiOperation({ summary: "Update a payment detail by ID" })
   @ApiResponse({
     status: 200,
@@ -67,7 +68,7 @@ export class PaymentDetailsController {
     return this.paymentDetailsService.update(+id, updatePaymentDetailDto);
   }
 
-  @UseGuards(CashierOwnershipGuard)
+  @UseGuards(AuthGuard, CashierOwnershipGuard)
   @ApiOperation({ summary: "Delete a payment detail by ID" })
   @ApiResponse({
     status: 200,

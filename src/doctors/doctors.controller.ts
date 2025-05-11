@@ -15,14 +15,14 @@ import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Doctor } from "./models/doctor.model";
 import { AdminGuard } from "../common/guards/adminGuard/admin.guard";
 import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
-import { AuthGuard } from "@nestjs/passport";
+import { AuthGuard } from "../common/guards/auth.guard";
 
 @ApiTags("Doctors")
 @Controller("doctors")
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 
-  // @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @ApiOperation({ summary: "Create a new doctor" })
   @ApiResponse({ status: 201, description: "Doctor successfully created." })
   @ApiResponse({ status: 400, description: "Bad request." })
@@ -31,7 +31,7 @@ export class DoctorsController {
     return this.doctorsService.create(createDoctorDto);
   }
 
-  @UseGuards(StaffGuard)
+  @UseGuards(AuthGuard, StaffGuard)
   @ApiOperation({ summary: "Get all doctors" })
   @ApiResponse({
     status: 200,
@@ -43,7 +43,7 @@ export class DoctorsController {
     return this.doctorsService.findAll();
   }
 
-  @UseGuards(StaffGuard)
+  @UseGuards(AuthGuard, StaffGuard)
   @ApiOperation({ summary: "Get doctor by id" })
   @ApiResponse({
     status: 200,
@@ -56,7 +56,7 @@ export class DoctorsController {
     return this.doctorsService.findOne(+id);
   }
 
-  // @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @ApiOperation({ summary: "Update doctor details" })
   @ApiResponse({
     status: 200,
@@ -69,7 +69,7 @@ export class DoctorsController {
     return this.doctorsService.update(+id, updateDoctorDto);
   }
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @ApiOperation({ summary: "Remove a doctor" })
   @ApiResponse({ status: 200, description: "Doctor successfully removed." })
   @ApiResponse({ status: 404, description: "Doctor not found." })

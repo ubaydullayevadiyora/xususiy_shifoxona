@@ -1,8 +1,6 @@
-import { TelegrafModule } from "nestjs-telegraf";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { BOT_NAME } from "./app.constants";
 import { PatientsModule } from "./patients/patients.module";
 import { AdminsModule } from "./admins/admins.module";
 import { DoctorsModule } from "./doctors/doctors.module";
@@ -28,20 +26,10 @@ import { LabTest } from "./lab-tests/models/lab-test.model";
 import { Diagnosis } from "./diagnoses/models/diagnosis.model";
 import { Appointment } from "./appointments/models/appointment.model";
 import { AuthModule } from "./auth/auth.module";
-import { JwtModule } from "@nestjs/jwt";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true }),
-
-    // TelegrafModule.forRootAsync({
-    //   botName: BOT_NAME,
-    //   useFactory: () => ({
-    //     token: process.env.BOT_TOKEN!,
-    //     middlewares: [],
-    //     includes: [],
-    //   }),
-    // }),
 
     SequelizeModule.forRoot({
       dialect: "postgres",

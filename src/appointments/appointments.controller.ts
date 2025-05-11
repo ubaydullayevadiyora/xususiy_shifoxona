@@ -17,7 +17,6 @@ import { PatientGuard } from "../common/guards/patientGuard/patient.guard";
 import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 import { AuthGuard } from "../common/guards/auth.guard";
 import { StaffGuard } from "../common/guards/staffGuard/staff.guard";
-import { DoctorOwnershipGuard } from "../common/guards/doctorGuard/doctorOwnership.guard";
 
 @ApiTags("Appointments")
 @Controller("appointments")
@@ -34,7 +33,7 @@ export class AppointmentsController {
   create(@Body() createAppointmentDto: CreateAppointmentDto) {
     return this.appointmentsService.create(createAppointmentDto);
   }
-  @UseGuards(AuthGuard, DoctorGuard)
+  @UseGuards(AuthGuard, StaffGuard, DoctorGuard)
   @ApiOperation({ summary: "Barcha appointmentlarni olish" })
   @ApiResponse({ status: 200, description: "Appointmentlar ro'yxati" })
   @Get()
@@ -51,6 +50,7 @@ export class AppointmentsController {
     return this.appointmentsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard, StaffGuard)
   @ApiOperation({ summary: "Appointmentni yangilash" })
   @ApiResponse({ status: 200, description: "Appointment yangilandi" })
   @Patch(":id")
@@ -61,7 +61,7 @@ export class AppointmentsController {
     return this.appointmentsService.update(+id, updateAppointmentDto);
   }
 
-  @UseGuards(AuthGuard, PatientGuard, PatientOwnershipGuard)
+  @UseGuards(AuthGuard, StaffGuard, PatientOwnershipGuard)
   @ApiOperation({ summary: "Appointmentni o'chirish" })
   @ApiResponse({ status: 200, description: "Appointment o'chirildi" })
   @Delete(":id")

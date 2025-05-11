@@ -14,7 +14,6 @@ import { CreateDiagnosisDto } from "./dto/create-diagnosis.dto";
 import { UpdateDiagnosisDto } from "./dto/update-diagnosis.dto";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { DoctorGuard } from "../common/guards/doctorGuard/doctor.guard";
-import { DoctorOwnershipGuard } from "../common/guards/doctorGuard/doctorOwnership.guard";
 import { PatientOwnershipGuard } from "../common/guards/patientGuard/patientOwnership.guard";
 
 @ApiTags("Diagnoses")

@@ -15,10 +15,8 @@ import { RoomAssignment } from "../room-assignments/models/room-assignment.model
 export class DoctorsService {
   constructor(
     @InjectModel(Doctor) private readonly doctorModel: typeof Doctor,
-    @InjectModel(RoomAssignment)
-    private roomAssignmentModel: typeof RoomAssignment,
-    @InjectModel(Room)
-    private roomsModel: typeof Room
+    @InjectModel(RoomAssignment)private roomAssignmentModel: typeof RoomAssignment,
+    @InjectModel(Room)private roomsModel: typeof Room
   ) {}
   async create(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
     const existing = await this.doctorModel.findOne({

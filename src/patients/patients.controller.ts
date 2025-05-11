@@ -1,4 +1,3 @@
-import { AppointmentsService } from './../appointments/appointments.service';
 import {
   Controller,
   Get,
@@ -14,29 +13,30 @@ import { CreatePatientDto } from "./dto/create-patient.dto";
 import { UpdatePatientDto } from "./dto/update-patient.dto";
 import { ApiTags, ApiOperation, ApiParam } from "@nestjs/swagger";
 import { PatientGuard } from '../common/guards/patientGuard/patient.guard';
-import { AdminGuard } from '../common/guards/adminGuard/admin.guard';
 import { StaffGuard } from '../common/guards/staffGuard/staff.guard';
+import { AuthGuard } from '../common/guards/auth.guard';
+import { DoctorOwnershipGuard } from '../common/guards/doctorGuard/doctorOwnership.guard';
 
 @ApiTags("Patients")
 @Controller("patients")
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
 
-  @UseGuards(PatientGuard)
+  @UseGuards(AuthGuard, PatientGuard)
   @ApiOperation({ summary: "Yangi bemor qo'shish" })
   @Post()
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientsService.create(createPatientDto);
   }
 
-  @UseGuards(AdminGuard, StaffGuard)
+  @UseGuards(AuthGuard, StaffGuard, DoctorOwnershipGuard)
   @ApiOperation({ summary: "Barcha bemorlarni olish" })
   @Get()
   findAll() {
     return this.patientsService.findAll();
   }
 
-  @UseGuards(AdminGuard, StaffGuard)
+  @UseGuards(AuthGuard, StaffGuard, DoctorOwnershipGuard)
   @ApiOperation({ summary: "ID orqali bitta bemorni olish" })
   @ApiParam({ name: "id", type: Number })
   @Get(":id")
@@ -44,7 +44,7 @@ export class PatientsController {
     return this.patientsService.findOne(+id);
   }
 
-  @UseGuards(PatientGuard)
+  @UseGuards(AuthGuard, PatientGuard)
   @ApiOperation({ summary: "Bemor ma'lumotlarini yangilash" })
   @ApiParam({ name: "id", type: Number })
   @Patch(":id")
@@ -52,7 +52,7 @@ export class PatientsController {
     return this.patientsService.update(+id, updatePatientDto);
   }
 
-  @UseGuards(PatientGuard)
+  @UseGuards(AuthGuard, PatientGuard)
   @ApiOperation({ summary: "Bemorni o'chirish" })
   @ApiParam({ name: "id", type: Number })
   @Delete(":id")
