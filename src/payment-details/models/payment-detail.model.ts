@@ -10,7 +10,6 @@ import { Payment } from "../../payments/models/payment.model";
 
 interface IPaymentDetailsCreationAttr {
   payment_id: number;
-  service_price_id: number;
   price: string;
   description: string;
 }
@@ -45,6 +44,6 @@ export class PaymentDetail extends Model<
 
   // _________________________
 
-  // @BelongsTo(() => Payment)
-  // payment: Payment;
+  @BelongsTo(() => Payment)
+  payment: Payment;
 }

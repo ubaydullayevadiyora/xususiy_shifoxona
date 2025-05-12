@@ -22,7 +22,7 @@ import { AuthGuard } from '../common/guards/auth.guard';
 export class PaymentDetailsController {
   constructor(private readonly paymentDetailsService: PaymentDetailsService) {}
 
-  @UseGuards(AuthGuard, AdminGuard, CashierGuard, PatientGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @ApiOperation({ summary: "Create a payment detail" })
   @ApiResponse({
     status: 201,

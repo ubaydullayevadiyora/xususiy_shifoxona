@@ -1,3 +1,4 @@
+import { Appointment } from "../../appointments/models/appointment.model";
 import { Doctor } from "../../doctors/models/doctor.model";
 import { RoomAssignment } from "../../room-assignments/models/room-assignment.model";
 import { RoomStatusEnum, RoomTypeEnum } from "./../../app.constants";
@@ -44,9 +45,9 @@ export class Room extends Model<Room, IRoomCreationAttr> {
 
   // ________________________ room _____________________
 
-  // @HasMany(() => RoomAssignment)
-  // roomAssignments: RoomAssignment[];
+  @HasMany(() => RoomAssignment)
+  roomAssignments: RoomAssignment[];
 
-  // @HasMany(() => Doctor)
-  // doctor: Doctor[];
+  @HasMany(() => Doctor)
+  doctor: Doctor[];
 }

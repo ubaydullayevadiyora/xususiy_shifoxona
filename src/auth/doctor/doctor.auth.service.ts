@@ -71,6 +71,7 @@ export class DoctorAuthService {
     return {
       message: "Doctor tizimga kirdi",
       accessToken,
+      refreshToken
     };
   }
 

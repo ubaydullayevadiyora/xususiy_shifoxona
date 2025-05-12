@@ -54,18 +54,12 @@ export class Staff extends Model<Staff, IStaffCreationAttr> {
   @Column({ type: DataType.STRING, allowNull: true })
   declare hashed_refresh_token: string | null;
 
-  // @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  // is_verified: boolean;
-
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   declare is_active: boolean;
 
-  // @Column({ type: DataType.STRING, defaultValue: false })
-  // activation_link: string;
+  @HasMany(() => Doctor)
+  doctor: Doctor[];
 
-  // @HasMany(() => Doctor)
-  // doctor: Doctor[];
-
-  // @HasMany(() => RoomAssignment)
-  // roomAssignment: RoomAssignment[];
+  @HasMany(() => RoomAssignment)
+  roomAssignment: RoomAssignment[];
 }

@@ -78,12 +78,12 @@ export class Patient extends Model<Patient, IPatientCreationsAttr> {
 
   // ______________________ relations _____________________
 
-  // @HasMany(() => Appointment)
-  // appointments: Appointment[];
+  @HasMany(() => Appointment)
+  appointments: Appointment[];
 
-  // @HasMany(() => Payment)
-  // payments: Payment[];
+  @HasMany(() => Payment)
+  payments: Payment[];
 
-  // @HasMany(() => RoomAssignment)
-  // roomAssignments: RoomAssignment[];
+  @HasMany(() => RoomAssignment)
+  roomAssignments: RoomAssignment[];
 }

@@ -44,9 +44,9 @@ export class Diagnosis extends Model<Diagnosis, IDiagnosesCreationAttr> {
 
   // ________________________ diagnosis ____________________________
 
-  // @BelongsTo(() => Appointment)
-  // appointment: Appointment;
+  @BelongsTo(() => Appointment)
+  appointment: Appointment;
 
-  // @HasMany(() => Prescription)
-  // prescriptions: Prescription[];
+  @HasMany(() => Prescription)
+  prescriptions: Prescription[];
 }

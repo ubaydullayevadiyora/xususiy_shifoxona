@@ -118,6 +118,7 @@ export class PatientAuthService {
     return {
       message: "Patient tizimga kirdi",
       accessToken,
+      refreshToken
     };
   }
 

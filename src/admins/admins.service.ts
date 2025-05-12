@@ -43,7 +43,7 @@ export class AdminsService {
 
   async findAdminByEmail(email: string): Promise<Admin> {
     console.log(email);
-    
+
     const admin = await this.adminModel.findOne({ where: { email } });
     if (!admin) {
       throw new NotFoundException(`Admin with email ${email} not found`);
@@ -52,10 +52,15 @@ export class AdminsService {
   }
 
   async updateRefreshToken(id: number, hashed_refresh_token: string | null) {
-    const updateAdmin = await this.adminModel.update(
+    const updatePatient = await this.adminModel.update(
       { hashed_refresh_token },
       { where: { id } }
     );
-    return updateAdmin;
+    
+    if (updatePatient[0] > 0) {
+      return { message: "Refresh token successfully updated" };
+    } else {
+      return { message: "Admin not found or token not updated" };
+    }
   }
 }

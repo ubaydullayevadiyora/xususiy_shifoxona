@@ -38,7 +38,7 @@ export class PaymentsController {
     return this.paymentsService.findAll();
   }
 
-  @UseGuards(AuthGuard, PatientGuard)
+  @UseGuards(AuthGuard, CashierGuard)
   @Get(":id")
   @ApiOperation({ summary: "To'lovni ID bo'yicha ko'rish" })
   @ApiResponse({ status: 200, description: "To'lov ma'lumotlari" })

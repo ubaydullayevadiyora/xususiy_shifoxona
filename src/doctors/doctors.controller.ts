@@ -77,4 +77,12 @@ export class DoctorsController {
   remove(@Param("id") id: string) {
     return this.doctorsService.remove(+id);
   }
+
+  @Patch("refresh-token/:id")
+  updateRefreshToken(
+    @Param("id") id: number,
+    @Body("hashed_refresh_token") hashed_refresh_token: string | null
+  ) {
+    return this.doctorsService.updateRefreshToken(id, hashed_refresh_token);
+  }
 }

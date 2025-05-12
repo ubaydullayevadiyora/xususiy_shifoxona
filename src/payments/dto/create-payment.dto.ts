@@ -2,8 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { PaymentMethodEnum, PaymentStatusEnum } from "../../app.constants";
 
 export class CreatePaymentDto {
-  @ApiProperty({ example: 1, description: "Xizmat narxi ID raqami" })
-  service_price_id: number;
 
   @ApiProperty({ example: 10, description: "Bemor ID raqami" })
   patient_id: number;

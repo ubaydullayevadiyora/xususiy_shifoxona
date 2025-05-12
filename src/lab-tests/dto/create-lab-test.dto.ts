@@ -3,10 +3,6 @@ import { IsInt, IsString, IsDate, IsEnum, IsNotEmpty } from "class-validator";
 import { TestTypeEnum } from "../../app.constants";
 
 export class CreateLabTestDto {
-  @ApiProperty({ example: 1, description: "Xizmat narxi ID raqami" })
-  @IsInt()
-  @IsNotEmpty()
-  service_price_id: number;
 
   @ApiProperty({ example: 123, description: "Uchrashuv ID raqami" })
   @IsInt()
@@ -31,7 +27,6 @@ export class CreateLabTestDto {
     example: "2025-05-15T10:00:00Z",
     description: "Natija chiqarilgan sana",
   })
-  @IsDate()
   @IsNotEmpty()
   result_date: Date;
 }

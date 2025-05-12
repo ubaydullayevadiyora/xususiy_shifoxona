@@ -15,8 +15,9 @@ import { RoomAssignment } from "../room-assignments/models/room-assignment.model
 export class DoctorsService {
   constructor(
     @InjectModel(Doctor) private readonly doctorModel: typeof Doctor,
-    @InjectModel(RoomAssignment)private roomAssignmentModel: typeof RoomAssignment,
-    @InjectModel(Room)private roomsModel: typeof Room
+    @InjectModel(RoomAssignment)
+    private roomAssignmentModel: typeof RoomAssignment,
+    @InjectModel(Room) private roomsModel: typeof Room
   ) {}
   async create(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
     const existing = await this.doctorModel.findOne({
@@ -70,6 +71,11 @@ export class DoctorsService {
       { hashed_refresh_token },
       { where: { id } }
     );
-    return updatePatient;
+
+    if (updatePatient[0] > 0) {
+      return { message: "Refresh token successfully updated" };
+    } else {
+      return { message: "Doctor not found or token not updated" };
+    }
   }
 }

@@ -14,7 +14,6 @@ import { PaymentDetail } from "../../payment-details/models/payment-detail.model
 import { Appointment } from "../../appointments/models/appointment.model";
 
 interface IPaymentCreationAttr {
-  service_price_id: number;
   patient_id: number;
   total_amount: string;
   method:PaymentMethodEnum
@@ -43,11 +42,18 @@ export class Payment extends Model<Payment, IPaymentCreationAttr> {
   declare total_amount: string;
 
   @Column({
+    type: DataType.ENUM(...Object.values(PaymentMethodEnum)),
+    allowNull: false,
+    defaultValue: PaymentMethodEnum.CASH,
+  })
+  declare method: PaymentMethodEnum;
+
+  @Column({
     type: DataType.ENUM(...Object.values(PaymentStatusEnum)),
     allowNull: false,
     defaultValue: PaymentStatusEnum.PANDING,
   })
-  declare test_type: PaymentStatusEnum;
+  declare status: PaymentStatusEnum;
 
   @Column({
     type: DataType.DATE,
@@ -62,12 +68,12 @@ export class Payment extends Model<Payment, IPaymentCreationAttr> {
 
   // ______________ payments_______________
 
-  // @BelongsTo(() => Patient)
-  // patient: Patient;
+  @BelongsTo(() => Patient)
+  patient: Patient;
 
-  // @HasMany(() => PaymentDetail)
-  // paymentDetails: PaymentDetail[];
+  @HasMany(() => PaymentDetail)
+  paymentDetails: PaymentDetail[];
 
-  // @HasMany(() => Appointment)
-  // appointment: Appointment[];
+  @HasMany(() => Appointment)
+  appointment: Appointment[];
 }

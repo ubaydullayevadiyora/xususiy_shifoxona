@@ -1,13 +1,23 @@
-import { BelongsTo, Column, DataType, ForeignKey, HasMany, HasOne, Model, Table } from "sequelize-typescript";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  HasOne,
+  Model,
+  Table,
+} from "sequelize-typescript";
 import { AppointmentStatus } from "../../app.constants";
 import { Patient } from "../../patients/models/patient.model";
 import { Doctor } from "../../doctors/models/doctor.model";
 import { Diagnosis } from "../../diagnoses/models/diagnosis.model";
 import { LabTest } from "../../lab-tests/models/lab-test.model";
 import { Payment } from "../../payments/models/payment.model";
+import { Room } from "../../rooms/models/room.model";
 
 interface IAppointmentsCreationAttr {
-  paymentDetailsId: number;
+  payment_id: number;
   doctorId: number;
   patientId: number;
   description: string;
@@ -32,7 +42,7 @@ export class Appointment extends Model<Appointment, IAppointmentsCreationAttr> {
   declare doctorId: number;
 
   @ForeignKey(() => Payment)
-  @Column({ type: DataType.BIGINT })
+  @Column({ type: DataType.INTEGER })
   payment_id: number;
 
   @ForeignKey(() => Patient)
@@ -70,18 +80,18 @@ export class Appointment extends Model<Appointment, IAppointmentsCreationAttr> {
 
   // ___________________ appointment __________________
 
-  // @BelongsTo(() => Patient)
-  // patient: Patient;
+  @BelongsTo(() => Patient)
+  patient: Patient;
 
-  // @BelongsTo(() => Doctor)
-  // doctor: Doctor;
+  @BelongsTo(() => Doctor)
+  doctor: Doctor;
 
-  // @BelongsTo(() => Payment)
-  // payment: Payment;
+  @BelongsTo(() => Payment)
+  payment: Payment;
 
-  // @HasOne(() => LabTest)
-  // labTest: LabTest;
+  @HasOne(() => LabTest)
+  labTest: LabTest;
 
-  // @HasOne(() => Diagnosis)
-  // diagnosis: Diagnosis;
+  @HasOne(() => Diagnosis)
+  diagnosis: Diagnosis;
 }

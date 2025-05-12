@@ -6,9 +6,10 @@ import { Appointment } from "../appointments/models/appointment.model";
 import { Room } from "../rooms/models/room.model";
 import { ClinicController } from "./clinic.controller";
 import { ClinicService } from "./clinic.service";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-  imports: [SequelizeModule.forFeature([Doctor, Patient, Appointment, Room])],
+  imports: [SequelizeModule.forFeature([Doctor, Patient, Appointment, Room]), JwtModule],
   controllers: [ClinicController],
   providers: [ClinicService],
 })

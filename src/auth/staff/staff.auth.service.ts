@@ -74,6 +74,7 @@ export class StaffAuthService {
     return {
       message: `${staff.staff_name} tizimga kirdi`,
       accessToken,
+      refreshToken
     };
   }
 

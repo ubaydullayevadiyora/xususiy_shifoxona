@@ -54,7 +54,7 @@ import { ClinicModule } from "./clinic/clinic.module";
         Appointment,
       ],
       autoLoadModels: true,
-      sync: { force: true },
+      sync: { alter: true },
       logging: false,
     }),
 

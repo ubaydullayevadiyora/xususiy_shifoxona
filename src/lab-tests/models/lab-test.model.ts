@@ -10,7 +10,6 @@ import { TestTypeEnum } from "../../app.constants";
 import { Appointment } from "../../appointments/models/appointment.model";
 
 interface ILabTestsCreationAttr {
-  service_price_id: number;
   appointment_id: number;
   test_type: TestTypeEnum;
   result: string;
@@ -51,6 +50,6 @@ export class LabTest extends Model<LabTest, ILabTestsCreationAttr> {
 
   // ________________________ lab-test ________________________
 
-  // @BelongsTo(() => Appointment)
-  // appointment: Appointment;
+  @BelongsTo(() => Appointment)
+  appointment: Appointment;
 }

@@ -61,6 +61,6 @@ export class Prescription extends Model<Prescription, PrescriptionCreationAttrs>
 
   //__________________
 
-  // @BelongsTo(() => Diagnosis)
-  // diagnosis: Diagnosis;
+  @BelongsTo(() => Diagnosis)
+  diagnosis: Diagnosis;
 }

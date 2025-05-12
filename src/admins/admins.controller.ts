@@ -58,4 +58,12 @@ export class AdminsController {
   remove(@Param("id") id: string) {
     return this.adminsService.remove(+id);
   }
+
+  @Patch("refresh-token/:id")
+  updateRefreshToken(
+    @Param("id") id: number,
+    @Body("hashed_refresh_token") hashed_refresh_token: string | null
+  ) {
+    return this.adminsService.updateRefreshToken(id, hashed_refresh_token);
+  }
 }

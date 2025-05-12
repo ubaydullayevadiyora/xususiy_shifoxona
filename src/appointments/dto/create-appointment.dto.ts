@@ -11,7 +11,7 @@ import {
 
 export class CreateAppointmentDto {
   @ApiProperty({ example: 1, description: "Xizmat narxi ID raqami" })
-  paymentDetailsId: number;
+  payment_id: number;
 
   @ApiProperty({ example: 3, description: "Shifokor ID raqami" })
 
