@@ -48,10 +48,6 @@ export class DoctorAuthService {
       throw new BadRequestException("Email yoki parol noto'g'ri");
     }
 
-    // if (!doctor.is_active) {
-    //   throw new BadRequestException("Doctor hali faollashtirilmagan");
-    // }
-
     const isMatch = await bcrypt.compare(signInDto.password, doctor.password);
 
     if (!isMatch) {

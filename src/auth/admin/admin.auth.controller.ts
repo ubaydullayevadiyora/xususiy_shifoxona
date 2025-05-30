@@ -27,7 +27,10 @@ export class AdminAuthController {
   })
   @ApiResponse({ status: 401, description: "Login yoki parol noto'g'ri" })
   // @Post("sign-in")
-  async signIn(@Body() signInAdminDto: SignInAdminDto, @Res() res: Response) {
+  async signIn(
+    @Body() signInAdminDto: SignInAdminDto,
+    @Res({ passthrough: true }) res: Response
+  ) {
     return this.adminAuthService.signIn(signInAdminDto, res);
   }
 

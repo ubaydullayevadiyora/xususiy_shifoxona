@@ -65,6 +65,14 @@ export class PatientsController {
     return this.patientsService.verifyEmail(activationLink);
   }
 
+  @Patch("refresh-token/:id")
+  updateRefreshToken(
+    @Param("id") id: number,
+    @Body("hashed_refresh_token") hashed_refresh_token: string | null
+  ) {
+    return this.patientsService.updateRefreshToken(id, hashed_refresh_token);
+  }
+
   // @Get(":id/appointments")
   // @UseGuards(PatientOwnershipGuard)
   // async getAppointments(@Param("id") patientId: number) {

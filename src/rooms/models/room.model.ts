@@ -3,6 +3,7 @@ import { Doctor } from "../../doctors/models/doctor.model";
 import { RoomAssignment } from "../../room-assignments/models/room-assignment.model";
 import { RoomStatusEnum, RoomTypeEnum } from "./../../app.constants";
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { ApiProperty } from "@nestjs/swagger";
 
 interface IRoomCreationAttr {
   room_number: number;
@@ -10,8 +11,10 @@ interface IRoomCreationAttr {
   status: RoomStatusEnum;
   floor: number;
 }
+
 @Table({ tableName: "rooms" })
 export class Room extends Model<Room, IRoomCreationAttr> {
+  @ApiProperty({ description: "Room ID", example: 1 })
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
@@ -19,11 +22,17 @@ export class Room extends Model<Room, IRoomCreationAttr> {
   })
   declare id: number;
 
+  @ApiProperty({ description: "Room number", example: 101 })
   @Column({
     type: DataType.INTEGER,
   })
   declare room_number: number;
 
+  @ApiProperty({
+    description: "Room type",
+    enum: RoomTypeEnum,
+    default: RoomTypeEnum.GENERAL,
+  })
   @Column({
     type: DataType.ENUM(...Object.values(RoomTypeEnum)),
     allowNull: false,
@@ -31,6 +40,11 @@ export class Room extends Model<Room, IRoomCreationAttr> {
   })
   declare room_type: RoomTypeEnum;
 
+  @ApiProperty({
+    description: "Room status",
+    enum: RoomStatusEnum,
+    default: RoomStatusEnum.OCCUPIED,
+  })
   @Column({
     type: DataType.ENUM(...Object.values(RoomStatusEnum)),
     allowNull: false,
@@ -38,6 +52,10 @@ export class Room extends Model<Room, IRoomCreationAttr> {
   })
   declare status: RoomStatusEnum;
 
+  @ApiProperty({
+    description: "Floor number where the room is located",
+    example: 2,
+  })
   @Column({
     type: DataType.INTEGER,
   })
@@ -45,9 +63,11 @@ export class Room extends Model<Room, IRoomCreationAttr> {
 
   // ________________________ room _____________________
 
+  @ApiProperty({ type: () => RoomAssignment, isArray: true })
   @HasMany(() => RoomAssignment)
   roomAssignments: RoomAssignment[];
 
+  @ApiProperty({ type: () => Doctor, isArray: true })
   @HasMany(() => Doctor)
   doctor: Doctor[];
 }

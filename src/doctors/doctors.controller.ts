@@ -22,7 +22,7 @@ import { AuthGuard } from "../common/guards/auth.guard";
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 
-  // @UseGuards(AuthGuard, AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @ApiOperation({ summary: "Create a new doctor" })
   @ApiResponse({ status: 201, description: "Doctor successfully created." })
   @ApiResponse({ status: 400, description: "Bad request." })

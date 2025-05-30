@@ -6,6 +6,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+import { ApiProperty } from "@nestjs/swagger";
 import { Payment } from "../../payments/models/payment.model";
 
 interface IPaymentDetailsCreationAttr {
@@ -19,6 +20,7 @@ export class PaymentDetail extends Model<
   PaymentDetail,
   IPaymentDetailsCreationAttr
 > {
+  @ApiProperty({ description: "Payment Detail ID", example: 1 })
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
@@ -26,17 +28,23 @@ export class PaymentDetail extends Model<
   })
   declare id: number;
 
+  @ApiProperty({ description: "Payment ID", example: 1 })
   @ForeignKey(() => Payment)
   @Column({
     type: DataType.INTEGER,
   })
   declare payment_id: number;
 
+  @ApiProperty({ description: "Price of the payment detail", example: "99.99" })
   @Column({
     type: DataType.DECIMAL(10, 2),
   })
   declare price: string;
 
+  @ApiProperty({
+    description: "Description of the payment detail",
+    example: "Consultation fee",
+  })
   @Column({
     type: DataType.STRING(50),
   })
@@ -44,6 +52,7 @@ export class PaymentDetail extends Model<
 
   // _________________________
 
+  @ApiProperty({ type: () => Payment })
   @BelongsTo(() => Payment)
   payment: Payment;
 }

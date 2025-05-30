@@ -46,39 +46,39 @@ export class AdminAuthService {
     const admin = await this.adminService.findAdminByEmail(
       signInAdminDto.email
     );
+  console.log(1);
 
     if (!admin) {
       throw new BadRequestException("admin not found");
     }
-
+    console.log(2);
     const isMatch = await bcrypt.compare(
       signInAdminDto.password,
       admin.password
     );
-
+    console.log(3);
     if (!isMatch) {
       throw new UnauthorizedException("Email yoki parol noto'g'ri");
     }
-
+    console.log(4);
     const { accessToken, refreshToken } = await this.generateTokens(admin);
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
       maxAge: Number(process.env.COOKIE_TIME_REFRESH),
     });
-
-    // Refresh tokenni saqlashdan oldin uni hash qilish
+    console.log(5);
     admin.hashed_refresh_token = await bcrypt.hash(refreshToken, 7);
     admin.is_active = true;
     await admin.save();
-
+    console.log(6);
     return {
       message: "Admin tizimga kirdi",
       accessToken,
       refreshToken
     };
   }
-
+  
   async signOut(refreshToken: string, res: Response) {
     const userData = await this.jwtService.verify(refreshToken, {
       secret: process.env.REFRESH_TOKEN_KEY,

@@ -17,9 +17,9 @@ async function start() {
         const allowedOrigins = [
           "http://localhost:8000",
           "http://localhost:3000",
-          "https://skidkachi.uz",
-          "https://api.skidkachi.uz",
-          "https://skidkachi.vercel.app",
+          "https://smartmedical.uz",
+          "https://api.smartmedical.uz",
+          "https://smartmedical.vercel.app",
         ];
         if (!origin || allowedOrigins.includes(origin)) {
           callback(null, true);
@@ -28,7 +28,7 @@ async function start() {
         }
       },
       method: "GET, HEAD, PUT, PATCH, POST, DELETE",
-      credentials: true, //cookie va header
+      credentials: true, 
     });
 
     const config = new DocumentBuilder()
