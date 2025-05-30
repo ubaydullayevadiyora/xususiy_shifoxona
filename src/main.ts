@@ -40,8 +40,8 @@ async function start() {
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("docs", app, document);
-    await app.listen(PORT, () => {
-      console.log(`server started at; http://localhost:${PORT}`);
+    await app.listen(PORT, "0.0.0.0", () => {
+      console.log(`server started at: http://0.0.0.0:${PORT}`);
     });
   } catch (error) {
     console.log(error);
